@@ -226,7 +226,7 @@ int main() {
         printf("Unable to find process!\n");
         return 1;
     }
-    printf("Pid is: %d\n", pid);
+    printf("Process id of %s is %d.\n", process, pid);
     inject(pid, path);
     return 0;
 }
