@@ -213,14 +213,41 @@ int inject(pid_t pid, const char *lib)
     return 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     char path[1024];
-    printf("Enter path of the dylib to be injected:\n");
-    scanf("%s", path);
-    
     char process[1024];
-    printf("Enter name of process that the dylib should be injected in:\n");
-    scanf("%s", process);
+    if (argc == 1) {
+        printf("Enter path of the dylib to be injected:\n");
+        scanf("%s", path);
+
+        printf("Enter name of process that the dylib should be injected in:\n");
+        scanf("%s", process);
+    }
+    else if (argc == 2) {
+        if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+            printf("Dylib Injector\n\nUsage:\n       sudo ./dylibInjector\n       sudo ./dylibInjector -d [path to dylib] -p [process name]\n       sudo ./dylibInjector --dylib [path to dylib] --process [process name]");
+            return 1;
+        }
+        else {
+            printf("Arguments not recognized! Use -h or --help for help!\n");
+            return 1;
+        }
+    }
+    else if (argc == 5) {
+        if (strcmp(argv[1], "-d") == 0 && strcmp(argv[3], "-p") == 0 || strcmp(argv[1], "--dylib") == 0 && strcmp(argv[3], "--process") == 0) {
+            strcpy(path, argv[2]);
+            strcpy(process, argv[4]);
+        }
+        else {
+            printf("Arguments not recognized! Use -h or --help for help!\n");
+            return 1;
+        }
+    }
+    else {
+        printf("Incorrect number of arguments! Use -h or --help for help!\n");
+        return 1;
+    }
+
     pid_t pid = find_pid_from_process(process);
     if (pid == 0) {
         printf("Unable to find process!\n");
