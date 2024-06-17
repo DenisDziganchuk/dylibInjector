@@ -9,7 +9,7 @@ A graphical version of this program with a UI is coming soon!
 
 Building is as simple as running:
 ```
-g++ -o dylibInjector inject.cpp
+g++ -o dylibInjector inject.cpp -ldl -lpthread -framework IOKit -framework CoreFoundation
 ```
 This will generate a program `dylibInjector`.
 
